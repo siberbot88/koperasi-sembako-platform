@@ -45,14 +45,16 @@ File `render-build.sh` sudah dibuat otomatis.
 
 ### 2.3 Configure Service
 
+**PENTING**: Pilih **PHP** sebagai runtime, bukan Node.js!
+
 **Basic Settings**:
 - **Name**: `koperasi-sembako`
 - **Region**: `Singapore` (terdekat)
 - **Branch**: `main`
 - **Root Directory**: (kosongkan)
+- **Environment**: `PHP` ← **PILIH INI!**
 
 **Build Settings**:
-- **Runtime**: `PHP`
 - **Build Command**: 
   ```bash
   composer install --no-dev --optimize-autoloader && npm install && npm run build
