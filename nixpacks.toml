@@ -1,8 +1,12 @@
 [phases.setup]
-nixPkgs = ['php82', 'php82Extensions.mongodb', 'php82Packages.composer', 'nodejs_18']
+nixPkgs = ['php82', 'php82Extensions.mongodb', 'php82Packages.composer', 'nodejs_20']
 
 [phases.install]
-cmds = ['composer install --no-dev --optimize-autoloader --no-interaction', 'npm ci', 'npm run build']
+cmds = [
+    'composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader',
+    'npm install',
+    'npm run build'
+]
 
 [start]
 cmd = 'php artisan serve --host=0.0.0.0 --port=$PORT'
