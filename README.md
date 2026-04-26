@@ -2,6 +2,18 @@
 
 > Platform e-commerce koperasi sembako modern berbasis web, dibangun dengan Laravel 12, Livewire 3, dan MongoDB.
 
+## 🌐 Live Demo
+
+**🚀 Aplikasi sudah live di production!**
+
+👉 **[https://koperasi-sembako-c95c4670870e.herokuapp.com](https://koperasi-sembako-c95c4670870e.herokuapp.com)**
+
+### Akun Demo untuk Testing:
+| Peran | Email | Password |
+|---|---|---|
+| **Seller / Admin** | `admin@koperasisembako.id` | `password` |
+| **Customer** | `siti@example.com` | `password` |
+
 ---
 
 ## 📖 Tentang Aplikasi
@@ -228,6 +240,8 @@ Buka browser dan kunjungi:
 | **Login Seller** | http://127.0.0.1:8000/login |
 | **Dashboard Seller** | http://127.0.0.1:8000/seller |
 
+> 💡 **Atau langsung coba versi production:** [https://koperasi-sembako-c95c4670870e.herokuapp.com](https://koperasi-sembako-c95c4670870e.herokuapp.com)
+
 ---
 
 ## 🔐 Akun Default
@@ -301,6 +315,28 @@ Aplikasi mendukung pilihan kurir berikut saat checkout:
 - Efek brutal shadow pada card
 - Animasi hover & transisi halus
 - Responsive untuk mobile dan desktop
+
+---
+
+## 🚀 Deployment
+
+Aplikasi ini sudah di-deploy ke **Heroku** dan dapat diakses secara publik:
+
+**Production URL:** [https://koperasi-sembako-c95c4670870e.herokuapp.com](https://koperasi-sembako-c95c4670870e.herokuapp.com)
+
+### Tech Stack Production:
+- **Hosting:** Heroku (Free Tier)
+- **Database:** MongoDB Atlas (Free Tier)
+- **Storage:** Heroku Ephemeral Filesystem
+- **SSL:** Automatic HTTPS via Heroku
+
+### Fitur Production:
+- ✅ HTTPS enforced
+- ✅ Database seeding via web route
+- ✅ Optimized assets (Vite build)
+- ✅ Error handling & logging
+- ✅ Real-time notifications
+- ✅ AI Support Widget
 
 ---
 
