@@ -62,23 +62,65 @@ Route::view('dashboard', 'dashboard')
 
 // Database seeding route (for production deployment)
 Route::get('/seed-database', function () {
-    if (app()->environment('production')) {
-        try {
-            \Artisan::call('db:seed');
+    try {
+        // Check if data already exists
+        $existingProducts = \App\Models\Product::count();
+        if ($existingProducts > 0) {
             return response()->json([
                 'success' => true,
-                'message' => 'Database berhasil di-seed dengan data sample!',
-                'output' => \Artisan::output()
+                'message' => "Database sudah berisi {$existingProducts} produk. Tidak perlu seeding lagi."
             ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error saat seeding database: ' . $e->getMessage()
-            ], 500);
         }
+
+        // Direct seeding without Artisan
+        $seeder = new \Database\Seeders\DatabaseSeeder();
+        $seeder->run();
+        
+        $productCount = \App\Models\Product::count();
+        $categoryCount = \App\Models\Category::count();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Database berhasil di-seed dengan data sample!',
+            'data' => [
+                'products' => $productCount,
+                'categories' => $categoryCount
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error saat seeding database: ' . $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
     }
-    return response()->json(['success' => false, 'message' => 'Route hanya tersedia di production'], 403);
 })->name('seed.database');
+
+// Check database status
+Route::get('/check-database', function () {
+    try {
+        $stats = [
+            'users' => \App\Models\User::count(),
+            'categories' => \App\Models\Category::count(),
+            'products' => \App\Models\Product::count(),
+            'stores' => \App\Models\Store::count(),
+            'banners' => \App\Models\Banner::count(),
+            'coupons' => \App\Models\Coupon::count(),
+        ];
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Database status',
+            'data' => $stats,
+            'total_records' => array_sum($stats)
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error checking database: ' . $e->getMessage()
+        ], 500);
+    }
+})->name('check.database');
 
 Route::post('/logout', function (\App\Livewire\Actions\Logout $logout) {
     $logout();
