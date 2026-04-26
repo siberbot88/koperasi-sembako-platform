@@ -51,7 +51,16 @@
                 </div>
                 @endforeach
 
-                <button wire:click="clearCart" wire:confirm="Yakin ingin mengosongkan keranjang?" class="text-xs text-red-500 hover:text-red-700 font-medium transition-colors">
+                <button 
+                    @click="$dispatch('confirm', {
+                        title: 'Kosongkan Keranjang?',
+                        message: 'Semua produk di keranjang akan dihapus.',
+                        confirmText: 'Ya, Kosongkan',
+                        cancelText: 'Batal',
+                        type: 'warning',
+                        onConfirm: '$wire.clearCart()'
+                    })"
+                    class="text-xs text-red-500 hover:text-red-700 font-medium transition-colors">
                     Kosongkan Keranjang
                 </button>
             </div>

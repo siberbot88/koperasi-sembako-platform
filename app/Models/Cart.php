@@ -32,7 +32,7 @@ class Cart extends Model
     // ── Helpers ──
 
     /**
-     * Add or update an item in the cart.
+     * Add or update an item in the cart (increments qty if exists).
      */
     public function addItem(string $productId, int $qty): void
     {
@@ -44,6 +44,33 @@ class Cart extends Model
             $items = $items->map(function ($item) use ($productId, $qty) {
                 if ($item['product_id'] === $productId) {
                     $item['qty'] += $qty;
+                }
+                return $item;
+            });
+        } else {
+            $items->push([
+                'product_id' => $productId,
+                'qty' => $qty,
+                'added_at' => now()->toISOString(),
+            ]);
+        }
+
+        $this->items = $items->values()->toArray();
+    }
+
+    /**
+     * Set an item's qty to an exact value (used when updating from cart page).
+     */
+    public function setItem(string $productId, int $qty): void
+    {
+        $items = collect($this->items ?? []);
+
+        $existing = $items->firstWhere('product_id', $productId);
+
+        if ($existing) {
+            $items = $items->map(function ($item) use ($productId, $qty) {
+                if ($item['product_id'] === $productId) {
+                    $item['qty'] = $qty;
                 }
                 return $item;
             });

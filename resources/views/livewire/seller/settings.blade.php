@@ -1,171 +1,99 @@
-<div class="max-w-4xl mx-auto pb-24">
-    <x-slot:header>Pengaturan Toko</x-slot:header>
+<div class="space-y-6" x-data="{ activeTab: 'basic' }">
+    {{-- Header --}}
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold text-koperasi-black">Pengaturan Toko</h1>
+            <p class="text-sm text-koperasi-dark/60 mt-1">Kelola informasi dan tampilan toko Anda</p>
+        </div>
+        <button wire:click="save" class="btn-primary">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+            </svg>
+            Simpan Perubahan
+        </button>
+    </div>
 
-    <form wire:submit.prevent="save" class="space-y-8">
-        {{-- Section: Visual Profile --}}
-        <div class="card-bordered p-8 bg-white">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 rounded-full bg-koperasi-primary/20 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-koperasi-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                </div>
-                <h3 class="text-lg font-bold text-koperasi-black">Profil Visual Toko</h3>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-                {{-- Logo Upload --}}
-                <div class="md:col-span-4 space-y-3">
-                    <label class="input-label font-bold text-xs uppercase tracking-wider text-koperasi-dark/60">Logo Toko (1:1)</label>
-                    <div class="relative group">
-                        <div class="w-full aspect-square rounded-3xl border-2 border-dashed border-koperasi-dark/10 bg-koperasi-bg flex flex-col items-center justify-center overflow-hidden transition-all group-hover:border-koperasi-primary/50">
-                            @if ($logo)
-                                <img src="{{ $logo->temporaryUrl() }}" class="w-full h-full object-cover">
-                            @elseif ($existingLogo)
-                                <img src="{{ asset('storage/' . $existingLogo) }}" class="w-full h-full object-cover">
-                            @else
-                                <div class="text-center p-4">
-                                    <svg class="w-10 h-10 text-koperasi-dark/20 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                    <p class="text-[10px] font-medium text-koperasi-dark/40">Upload Logo</p>
-                                </div>
-                            @endif
-                        </div>
-                        <input type="file" wire:model="logo" id="logo-upload" class="hidden">
-                        <label for="logo-upload" class="absolute inset-0 cursor-pointer flex items-center justify-center bg-koperasi-black/0 group-hover:bg-koperasi-black/40 transition-all rounded-3xl opacity-0 group-hover:opacity-100">
-                            <span class="bg-white text-koperasi-black text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-brutal-sm">Ganti Logo</span>
-                        </label>
-                    </div>
-                </div>
+    {{-- Tabs Navigation --}}
+    <div class="card-bordered p-1 flex gap-1 overflow-x-auto">
+        <button 
+            @click="activeTab = 'basic'"
+            :class="activeTab === 'basic' ? 'bg-koperasi-primary text-koperasi-dark' : 'text-koperasi-dark/60 hover:text-koperasi-dark hover:bg-koperasi-dark/5'"
+            class="px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap flex items-center gap-2"
+        >
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.5 3.75a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V6.75a3 3 0 0 0-3-3h-15Zm4.125 3a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Zm-3.873 8.703a4.126 4.126 0 0 1 7.746 0 .75.75 0 0 1-.351.92 7.47 7.47 0 0 1-3.522.877 7.47 7.47 0 0 1-3.522-.877.75.75 0 0 1-.351-.92ZM15 8.25a.75.75 0 0 0 0 1.5h3.75a.75.75 0 0 0 0-1.5H15ZM14.25 12a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H15a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5h3.75a.75.75 0 0 0 0-1.5H15Z" clip-rule="evenodd" />
+            </svg>
+            Informasi Dasar
+        </button>
+        <button 
+            @click="activeTab = 'visual'"
+            :class="activeTab === 'visual' ? 'bg-koperasi-primary text-koperasi-dark' : 'text-koperasi-dark/60 hover:text-koperasi-dark hover:bg-koperasi-dark/5'"
+            class="px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap flex items-center gap-2"
+        >
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
+            </svg>
+            Profil Visual
+        </button>
+        <button 
+            @click="activeTab = 'operational'"
+            :class="activeTab === 'operational' ? 'bg-koperasi-primary text-koperasi-dark' : 'text-koperasi-dark/60 hover:text-koperasi-dark hover:bg-koperasi-dark/5'"
+            class="px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap flex items-center gap-2"
+        >
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" clip-rule="evenodd" />
+            </svg>
+            Operasional
+        </button>
+        <button 
+            @click="activeTab = 'social'"
+            :class="activeTab === 'social' ? 'bg-koperasi-primary text-koperasi-dark' : 'text-koperasi-dark/60 hover:text-koperasi-dark hover:bg-koperasi-dark/5'"
+            class="px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap flex items-center gap-2"
+        >
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4.913 2.658c2.075-.27 4.19-.408 6.337-.408 2.147 0 4.262.139 6.337.408 1.922.25 3.291 1.861 3.405 3.727a4.403 4.403 0 0 0-1.032-.211 50.89 50.89 0 0 0-8.42 0c-2.358.196-4.04 2.19-4.04 4.434v4.286a4.47 4.47 0 0 0 2.433 3.984L7.28 21.53A.75.75 0 0 1 6 21v-4.03a48.527 48.527 0 0 1-1.087-.128C2.905 16.58 1.5 14.833 1.5 12.862V6.638c0-1.97 1.405-3.718 3.413-3.979Z" />
+                <path d="M15.75 7.5c-1.376 0-2.739.057-4.086.169C10.124 7.797 9 9.103 9 10.609v4.285c0 1.507 1.128 2.814 2.67 2.94 1.243.102 2.5.157 3.768.165l2.782 2.781a.75.75 0 0 0 1.28-.53v-2.39l.33-.026c1.542-.125 2.67-1.433 2.67-2.94v-4.286c0-1.505-1.125-2.811-2.664-2.94A49.392 49.392 0 0 0 15.75 7.5Z" />
+            </svg>
+            Media Sosial
+        </button>
+        <button 
+            @click="activeTab = 'policies'"
+            :class="activeTab === 'policies' ? 'bg-koperasi-primary text-koperasi-dark' : 'text-koperasi-dark/60 hover:text-koperasi-dark hover:bg-koperasi-dark/5'"
+            class="px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap flex items-center gap-2"
+        >
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z" clip-rule="evenodd" />
+                <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
+            </svg>
+            Kebijakan
+        </button>
+    </div>
 
-                {{-- Banner Upload --}}
-                <div class="md:col-span-8 space-y-3">
-                    <label class="input-label font-bold text-xs uppercase tracking-wider text-koperasi-dark/60">Banner Toko (16:9)</label>
-                    <div class="relative group h-full max-h-[200px]">
-                        <div class="w-full h-full aspect-video md:aspect-auto rounded-3xl border-2 border-dashed border-koperasi-dark/10 bg-koperasi-bg flex flex-col items-center justify-center overflow-hidden transition-all group-hover:border-koperasi-primary/50">
-                            @if ($banner)
-                                <img src="{{ $banner->temporaryUrl() }}" class="w-full h-full object-cover">
-                            @elseif ($existingBanner)
-                                <img src="{{ asset('storage/' . $existingBanner) }}" class="w-full h-full object-cover">
-                            @else
-                                <div class="text-center p-4">
-                                    <svg class="w-12 h-12 text-koperasi-dark/20 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/></svg>
-                                    <p class="text-[10px] font-medium text-koperasi-dark/40">Upload Banner</p>
-                                </div>
-                            @endif
-                        </div>
-                        <input type="file" wire:model="banner" id="banner-upload" class="hidden">
-                        <label for="banner-upload" class="absolute inset-0 cursor-pointer flex items-center justify-center bg-koperasi-black/0 group-hover:bg-koperasi-black/40 transition-all rounded-3xl opacity-0 group-hover:opacity-100">
-                            <span class="bg-white text-koperasi-black text-[10px] font-bold px-3 py-1.5 rounded-xl shadow-brutal-sm">Ganti Banner</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+    {{-- Tab Content --}}
+    <form wire:submit="save">
+        {{-- Basic Info Tab --}}
+        <div x-show="activeTab === 'basic'" x-cloak>
+            @include('livewire.seller.settings.basic-info')
         </div>
 
-        {{-- Section: Basic Info --}}
-        <div class="card-bordered p-8 bg-white">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="w-10 h-10 rounded-full bg-koperasi-primary/20 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-koperasi-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <h3 class="text-lg font-bold text-koperasi-black">Informasi Dasar Toko</h3>
-            </div>
-            
-            <div class="grid grid-cols-1 gap-8">
-                <div class="space-y-2">
-                    <label class="input-label font-bold text-xs uppercase tracking-wider text-koperasi-dark/60">Nama Toko</label>
-                    <input type="text" wire:model="name" class="input w-full py-4 px-5 text-base font-medium rounded-2xl" placeholder="Masukkan nama toko Anda">
-                    @error('name') <span class="text-xs text-red-500 font-medium px-2">{{ $message }}</span> @enderror
-                </div>
-
-                <div class="space-y-2">
-                    <label class="input-label font-bold text-xs uppercase tracking-wider text-koperasi-dark/60">Deskripsi Toko</label>
-                    <textarea wire:model="description" rows="4" class="input w-full py-4 px-5 text-base font-medium rounded-2xl resize-none" placeholder="Ceritakan tentang produk dan layanan toko Anda..."></textarea>
-                    @error('description') <span class="text-xs text-red-500 font-medium px-2">{{ $message }}</span> @enderror
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="space-y-2">
-                        <label class="input-label font-bold text-xs uppercase tracking-wider text-koperasi-dark/60">No. WhatsApp</label>
-                        <div class="relative">
-                            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-koperasi-dark/40 font-bold">+62</span>
-                            <input type="text" wire:model="phone" class="input w-full py-4 pl-14 pr-5 text-base font-medium rounded-2xl" placeholder="8123456789">
-                        </div>
-                        @error('phone') <span class="text-xs text-red-500 font-medium px-2">{{ $message }}</span> @enderror
-                    </div>
-                    <div class="space-y-2">
-                        <label class="input-label font-bold text-xs uppercase tracking-wider text-koperasi-dark/60">Kota / Kabupaten</label>
-                        <input type="text" wire:model="city" class="input w-full py-4 px-5 text-base font-medium rounded-2xl" placeholder="Contoh: Jakarta Timur">
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="input-label font-bold text-xs uppercase tracking-wider text-koperasi-dark/60">Alamat Lengkap</label>
-                    <input type="text" wire:model="address" class="input w-full py-4 px-5 text-base font-medium rounded-2xl" placeholder="Nama jalan, nomor gedung, atau patokan alamat">
-                </div>
-            </div>
+        {{-- Visual Tab --}}
+        <div x-show="activeTab === 'visual'" x-cloak>
+            @include('livewire.seller.settings.visual')
         </div>
 
-        {{-- Section: Operational Hours --}}
-        <div class="card-bordered p-8 bg-white">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="w-10 h-10 rounded-full bg-koperasi-primary/20 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-koperasi-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <h3 class="text-lg font-bold text-koperasi-black">Jam Operasional</h3>
-            </div>
-            
-            <div class="overflow-hidden rounded-2xl border-2 border-koperasi-black">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="bg-koperasi-bg border-b-2 border-koperasi-black">
-                            <th class="px-6 py-4 text-left font-bold text-xs uppercase tracking-widest text-koperasi-dark/50">Hari</th>
-                            <th class="px-6 py-4 text-left font-bold text-xs uppercase tracking-widest text-koperasi-dark/50">Jam Buka</th>
-                            <th class="px-6 py-4 text-left font-bold text-xs uppercase tracking-widest text-koperasi-dark/50">Jam Tutup</th>
-                            <th class="px-6 py-4 text-center font-bold text-xs uppercase tracking-widest text-koperasi-dark/50">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y-2 divide-koperasi-dark/5">
-                        @foreach($operationalHours as $day => $config)
-                        <tr class="{{ ($operationalHours[$day]['is_closed'] ?? false) ? 'bg-koperasi-dark/[0.02]' : '' }}">
-                            <td class="px-6 py-4 font-bold text-koperasi-black">{{ $day }}</td>
-                            <td class="px-6 py-4">
-                                <input type="time" wire:model="operationalHours.{{ $day }}.open" 
-                                       class="bg-koperasi-bg border-2 border-koperasi-dark/10 rounded-xl px-3 py-2 focus:ring-2 focus:ring-koperasi-primary outline-none font-bold"
-                                       {{ ($operationalHours[$day]['is_closed'] ?? false) ? 'disabled' : '' }}>
-                            </td>
-                            <td class="px-6 py-4">
-                                <input type="time" wire:model="operationalHours.{{ $day }}.close"
-                                       class="bg-koperasi-bg border-2 border-koperasi-dark/10 rounded-xl px-3 py-2 focus:ring-2 focus:ring-koperasi-primary outline-none font-bold"
-                                       {{ ($operationalHours[$day]['is_closed'] ?? false) ? 'disabled' : '' }}>
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" wire:model="operationalHours.{{ $day }}.is_closed" class="sr-only peer">
-                                    <div class="w-11 h-6 bg-koperasi-dark/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-koperasi-dark"></div>
-                                    <span class="ms-3 text-xs font-bold text-koperasi-dark/40 peer-checked:text-koperasi-dark">Tutup</span>
-                                </label>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+        {{-- Operational Tab --}}
+        <div x-show="activeTab === 'operational'" x-cloak>
+            @include('livewire.seller.settings.operational')
         </div>
 
-        {{-- Sticky Footer Actions --}}
-        <div class="sticky bottom-6 z-40 mt-12">
-            <div class="bg-white/95 backdrop-blur-xl border-2 border-koperasi-black p-4 rounded-3xl shadow-brutal flex items-center justify-between gap-4">
-                <div class="hidden sm:block">
-                    <p class="text-xs font-bold text-koperasi-black">Konfigurasi Toko</p>
-                    <p class="text-[10px] text-koperasi-dark/50">Pastikan semua informasi sudah benar</p>
-                </div>
-                <div class="flex items-center gap-4 w-full sm:w-auto">
-                    <button type="button" class="px-6 py-2 text-sm font-bold text-koperasi-dark/60 hover:text-red-500 transition-colors">Reset</button>
-                    <button type="submit" class="btn-primary flex-1 sm:flex-none justify-center px-8 py-3" wire:loading.attr="disabled">
-                        <span wire:loading.remove>Simpan Perubahan</span>
-                        <span wire:loading>Menyimpan...</span>
-                    </button>
-                </div>
-            </div>
+        {{-- Social Media Tab --}}
+        <div x-show="activeTab === 'social'" x-cloak>
+            @include('livewire.seller.settings.social-media')
+        </div>
+
+        {{-- Policies Tab --}}
+        <div x-show="activeTab === 'policies'" x-cloak>
+            @include('livewire.seller.settings.policies')
         </div>
     </form>
 </div>

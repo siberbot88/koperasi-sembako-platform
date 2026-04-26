@@ -27,7 +27,7 @@ class CartPage extends Component
         if (! $product) return;
 
         $qty = max(1, min($qty, $product->stock));
-        $cart->addItem($productId, $qty);
+        $cart->setItem($productId, $qty);  // set exact qty, not increment
         $cart->save();
 
         $this->dispatch('cart-updated');

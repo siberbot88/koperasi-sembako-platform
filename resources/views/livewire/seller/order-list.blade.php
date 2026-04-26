@@ -102,9 +102,16 @@
                 <div class="flex flex-wrap gap-2">
                     @if($order->status === 'pending')
                         <button wire:click="updateOrderStatus('{{ $order->_id }}', 'processing')" class="btn-primary btn-sm">Proses Pesanan</button>
-                        <button wire:click="updateOrderStatus('{{ $order->_id }}', 'cancelled')"
-                                wire:confirm="Yakin ingin membatalkan pesanan ini?"
-                                class="btn-outline btn-sm text-red-600 border-red-400 hover:bg-red-50 hover:text-red-700">Batalkan</button>
+                        <button 
+                            @click="$dispatch('confirm', {
+                                title: 'Batalkan Pesanan?',
+                                message: 'Pesanan yang dibatalkan tidak dapat diproses kembali.',
+                                confirmText: 'Ya, Batalkan',
+                                cancelText: 'Tidak',
+                                type: 'danger',
+                                onConfirm: '$wire.updateOrderStatus(\'{{ $order->_id }}\', \'cancelled\')'
+                            })"
+                            class="btn-outline btn-sm text-red-600 border-red-400 hover:bg-red-50 hover:text-red-700">Batalkan</button>
                     @elseif($order->status === 'processing')
                         @if($order->fulfillment_type === 'delivery')
                             <button wire:click="openShipmentModal('{{ $order->_id }}')" class="btn-secondary btn-sm">Tandai Dikirim (Input Resi)</button>

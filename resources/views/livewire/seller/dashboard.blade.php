@@ -251,6 +251,76 @@
     </script>
     @endpush
 
+    {{-- Review Summary --}}
+    <div class="card-bordered mb-6">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-koperasi-dark/10">
+            <h3 class="font-bold text-sm text-koperasi-black">Ulasan Pelanggan Terbaru</h3>
+            <a href="{{ route('seller.reviews') }}" class="text-xs font-medium text-koperasi-dark/60 hover:text-koperasi-black transition-colors" wire:navigate>Lihat semua &rarr;</a>
+        </div>
+
+        {{-- Stats Row --}}
+        <div class="grid grid-cols-3 divide-x divide-koperasi-dark/10 border-b border-koperasi-dark/10">
+            <div class="p-4 text-center">
+                <p class="text-2xl font-extrabold text-koperasi-black">{{ $avgRating > 0 ? number_format($avgRating, 1) : '-' }}</p>
+                <div class="flex justify-center gap-0.5 my-1">
+                    @for($i = 1; $i <= 5; $i++)
+                    <svg class="w-3 h-3 {{ $i <= round($avgRating) ? 'text-koperasi-primary' : 'text-koperasi-dark/15' }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+                    </svg>
+                    @endfor
+                </div>
+                <p class="text-[10px] text-koperasi-dark/50">Rata-rata Rating</p>
+            </div>
+            <div class="p-4 text-center">
+                <p class="text-2xl font-extrabold text-koperasi-black">{{ $totalReviews }}</p>
+                <p class="text-[10px] text-koperasi-dark/50 mt-1">Total Ulasan</p>
+            </div>
+            <div class="p-4 text-center">
+                <p class="text-2xl font-extrabold {{ $unrepliedCount > 0 ? 'text-orange-500' : 'text-green-600' }}">{{ $unrepliedCount }}</p>
+                <p class="text-[10px] text-koperasi-dark/50 mt-1">Belum Dibalas</p>
+            </div>
+        </div>
+
+        {{-- Latest Reviews --}}
+        @if($latestReviews->count())
+        <div class="divide-y divide-koperasi-dark/5">
+            @foreach($latestReviews as $review)
+            <div class="px-4 py-3 flex items-start gap-3">
+                <div class="w-8 h-8 bg-koperasi-accent rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0">
+                    {{ strtoupper(substr($review->user?->name ?? '?', 0, 1)) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
+                        <div>
+                            <span class="text-sm font-semibold text-koperasi-dark">{{ $review->user?->name ?? 'Anonim' }}</span>
+                            <span class="text-[10px] text-koperasi-dark/40 ml-2">pada {{ $review->product?->name ?? '-' }}</span>
+                        </div>
+                        <div class="flex items-center gap-0.5 flex-shrink-0">
+                            @for($i = 1; $i <= 5; $i++)
+                            <svg class="w-3 h-3 {{ $i <= $review->rating ? 'text-koperasi-primary' : 'text-koperasi-dark/15' }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+                            </svg>
+                            @endfor
+                        </div>
+                    </div>
+                    <p class="text-xs text-koperasi-dark/70 mt-0.5 truncate">{{ $review->comment }}</p>
+                    @if(!$review->seller_reply)
+                    <a href="{{ route('seller.reviews') }}" wire:navigate class="text-[10px] font-bold text-orange-500 hover:text-orange-700 mt-1 inline-block">Balas ulasan ini &rarr;</a>
+                    @else
+                    <span class="text-[10px] font-bold text-green-600 mt-1 inline-block">✓ Sudah dibalas</span>
+                    @endif
+                </div>
+                <p class="text-[10px] text-koperasi-dark/40 flex-shrink-0">{{ $review->created_at?->format('d/m/Y') }}</p>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <div class="px-4 py-8 text-center">
+            <p class="text-sm text-koperasi-dark/40">Belum ada ulasan dari pelanggan.</p>
+        </div>
+        @endif
+    </div>
+
     {{-- Recent Orders --}}
     <div class="card-bordered">
         <div class="flex items-center justify-between px-4 py-3 border-b border-koperasi-dark/10">

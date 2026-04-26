@@ -5,6 +5,7 @@ namespace App\Livewire\Seller;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Review;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -110,6 +111,25 @@ class Dashboard extends Component
 
         $recentOrders = Order::forSeller($storeId)->recent()->limit(5)->get();
 
+        // 4. Review Summary for Dashboard
+        $productIds = Product::where('store_id', $storeId)
+            ->get()
+            ->pluck('_id')
+            ->map(fn($id) => (string) $id)
+            ->toArray();
+
+        $allReviews     = Review::whereIn('product_id', $productIds)->get(['rating', 'seller_reply', 'created_at']);
+        $avgRating      = $allReviews->isNotEmpty() ? round($allReviews->avg('rating'), 1) : 0;
+        $totalReviews   = $allReviews->count();
+        $unrepliedCount = $allReviews->whereNull('seller_reply')->count();
+
+        // Latest 3 reviews for the dashboard preview
+        $latestReviews = Review::whereIn('product_id', $productIds)
+            ->with(['user', 'product'])
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+
         return view('livewire.seller.dashboard', [
             'stats' => $stats,
             'recentOrders' => $recentOrders,
@@ -117,6 +137,10 @@ class Dashboard extends Component
             'dailyRetention' => $dailyRetention,
             'categoryStats' => $categoryStats,
             'topCategories' => $topCategories,
+            'avgRating' => $avgRating,
+            'totalReviews' => $totalReviews,
+            'unrepliedCount' => $unrepliedCount,
+            'latestReviews' => $latestReviews,
         ]);
     }
 }

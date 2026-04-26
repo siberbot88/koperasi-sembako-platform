@@ -70,6 +70,16 @@ class ReviewInsight extends Component
         $review->seller_replied_at = now();
         $review->save();
 
+        // Create notification for user
+        \App\Models\Notification::createForUser(
+            $review->user_id,
+            \App\Models\Notification::TYPE_REVIEW_REPLY,
+            'Penjual Membalas Ulasan Anda',
+            "Ulasan Anda untuk produk '{$product->name}' telah dibalas oleh penjual",
+            route('products.show', $product->slug),
+            ['review_id' => (string) $review->_id, 'product_id' => (string) $product->_id]
+        );
+
         $this->closeReplyModal();
         $this->dispatch('toast', message: 'Balasan berhasil dikirim.');
     }
@@ -80,6 +90,7 @@ class ReviewInsight extends Component
 
         // Get all product IDs belonging to this store
         $productIds = Product::where('store_id', (string) $store?->_id)
+            ->get()
             ->pluck('_id')
             ->map(fn($id) => (string) $id)
             ->toArray();

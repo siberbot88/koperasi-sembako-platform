@@ -10,17 +10,33 @@ class Store extends Model
     protected $collection = 'stores';
 
     protected $fillable = [
+        'user_id',
         'seller_id',
         'name',
         'slug',
+        'tagline',
         'description',
         'logo',
         'banner',
         'phone',
+        'email',
+        'whatsapp',
         'address',
         'city',
-        'operational_hours',   // embedded: { open, close }
+        'province',
+        'postal_code',
+        'operational_hours',
         'is_active',
+        'min_order',
+        'free_shipping_min',
+        'facebook',
+        'instagram',
+        'twitter',
+        'tiktok',
+        'website',
+        'return_policy',
+        'shipping_policy',
+        'terms_conditions',
     ];
 
     protected function casts(): array
@@ -28,6 +44,8 @@ class Store extends Model
         return [
             'operational_hours' => 'array',
             'is_active' => 'boolean',
+            'min_order' => 'integer',
+            'free_shipping_min' => 'integer',
         ];
     }
 

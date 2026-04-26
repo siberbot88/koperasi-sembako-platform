@@ -86,26 +86,54 @@ class Checkout extends Component
         }
 
         $user = auth()->user();
-        if ($coupon->user_id && $coupon->user_id !== (string) $user->_id) {
+
+        // Kupon eksklusif milik user lain
+        if ($coupon->user_id && (string) $coupon->user_id !== (string) $user->_id) {
             $this->couponError = 'Kupon ini eksklusif dan tidak berlaku untuk akun Anda';
+            return;
+        }
+
+        // Kupon sudah habis dipakai
+        if ($coupon->usage_limit > 0 && $coupon->used_count >= $coupon->usage_limit) {
+            $this->couponError = 'Kupon ini sudah habis digunakan';
+            return;
+        }
+
+        // Kupon tidak aktif
+        if (! $coupon->is_active) {
+            $this->couponError = 'Kupon ini sudah tidak aktif';
+            return;
+        }
+
+        // Kupon belum berlaku
+        if ($coupon->valid_from && now()->lt($coupon->valid_from)) {
+            $this->couponError = 'Kupon ini belum berlaku hingga ' . $coupon->valid_from->format('d M Y');
+            return;
+        }
+
+        // Kupon sudah kedaluwarsa
+        if ($coupon->valid_until && now()->gt($coupon->valid_until)) {
+            $this->couponError = 'Kupon ini sudah kedaluwarsa';
             return;
         }
 
         $subtotal = $this->calculateSubtotal();
 
-        if (! $coupon->isValid($subtotal)) {
-            $this->couponError = 'Kupon tidak berlaku. Minimum belanja Rp ' . number_format($coupon->min_order_amount, 0, ',', '.');
+        // Minimum belanja tidak terpenuhi
+        if ($coupon->min_order_amount > 0 && $subtotal < $coupon->min_order_amount) {
+            $this->couponError = 'Minimum belanja Rp ' . number_format($coupon->min_order_amount, 0, ',', '.') . ' untuk menggunakan kupon ini';
             return;
         }
 
         $this->discountAmount = $coupon->calculateDiscount($subtotal);
         $this->appliedCoupon = [
-            'code' => $coupon->code,
-            'type' => $coupon->type,
+            'id'    => (string) $coupon->_id,
+            'code'  => $coupon->code,
+            'type'  => $coupon->type,
             'value' => $coupon->value,
         ];
 
-        $this->dispatch('toast', message: 'Kupon berhasil diterapkan');
+        $this->dispatch('toast', message: 'Kupon berhasil diterapkan! Hemat Rp ' . number_format($this->discountAmount, 0, ',', '.'));
     }
 
     public function removeCoupon()
@@ -177,6 +205,11 @@ class Checkout extends Component
             if ($coupon && $coupon->isValid($subtotal)) {
                 $this->discountAmount = $coupon->calculateDiscount($subtotal);
                 $coupon->increment('used_count');
+
+                // Mark user-specific reward coupon as inactive after use
+                if ($coupon->user_id) {
+                    $coupon->update(['is_active' => false]);
+                }
             } else {
                 $this->discountAmount = 0;
                 $this->appliedCoupon = null;
@@ -244,6 +277,19 @@ class Checkout extends Component
         // Clear cart
         $cart->items = [];
         $cart->save();
+
+        // Create notification for seller
+        $store = \App\Models\Store::find($order->store_id);
+        if ($store && $store->user_id) {
+            \App\Models\Notification::createForUser(
+                $store->user_id,
+                \App\Models\Notification::TYPE_NEW_ORDER,
+                'Pesanan Baru!',
+                "Pesanan #{$order->order_number} - Total: Rp " . number_format($order->total_amount, 0, ',', '.'),
+                route('seller.orders'),
+                ['order_id' => (string) $order->_id]
+            );
+        }
 
         $this->dispatch('cart-updated');
         $this->dispatch('toast', message: 'Pesanan berhasil dibuat!');

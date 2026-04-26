@@ -71,6 +71,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                             </svg>
                         </a>
+
+                        {{-- Notifications --}}
+                        <livewire:notification-bell />
                         @endauth
 
                         {{-- Cart --}}
@@ -196,22 +199,19 @@
         </footer>
 
         {{-- ======== TOAST NOTIFICATION ======== --}}
-        <div x-data="{ toasts: [] }"
-             @toast.window="toasts.push({ id: Date.now(), message: $event.detail.message, type: $event.detail.type || 'success' }); setTimeout(() => toasts.shift(), 3000)"
-             class="fixed bottom-6 right-6 z-50 space-y-2">
-            <template x-for="toast in toasts" :key="toast.id">
-                <div x-show="true"
-                     x-transition:enter="transition ease-out duration-300"
-                     x-transition:enter-start="opacity-0 translate-y-4"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     x-transition:leave="transition ease-in duration-200"
-                     x-transition:leave-start="opacity-100"
-                     x-transition:leave-end="opacity-0"
-                     :class="toast.type === 'error' ? 'toast-error' : 'toast-success'"
-                     x-text="toast.message">
-                </div>
-            </template>
-        </div>
+        <x-ui.toast-container />
+
+        {{-- ======== OFFLINE BANNER ======== --}}
+        <x-ui.offline-banner />
+
+        {{-- ======== LIVEWIRE PROGRESS BAR ======== --}}
+        <x-ui.livewire-progress-simple />
+
+        {{-- ======== LIVEWIRE ERROR OVERLAY ======== --}}
+        <x-ui.livewire-error />
+
+        {{-- ======== CONFIRM DIALOG ======== --}}
+        <x-ui.confirm-dialog />
 
         {{-- ======== AI CUSTOMER SUPPORT WIDGET ======== --}}
         <livewire:ai-support-widget />

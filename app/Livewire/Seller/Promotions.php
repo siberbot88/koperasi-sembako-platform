@@ -34,6 +34,8 @@ class Promotions extends Component
     #[Validate('required|integer|min:0')]
     public int $pointsCost = 0; // 0 = public coupon, >0 = reward template
 
+    public string $couponType = 'public'; // 'public' | 'reward'
+
     #[Validate('nullable|date')]
     public ?string $validFrom = null;
 
@@ -45,6 +47,14 @@ class Promotions extends Component
     public function save()
     {
         $this->validate();
+
+        // If public coupon, force points_cost to 0
+        if ($this->couponType === 'public') {
+            $this->pointsCost = 0;
+        } elseif ($this->pointsCost < 1) {
+            $this->addError('pointsCost', 'Harga poin harus minimal 1.');
+            return;
+        }
 
         $user = auth()->user();
         $store = $user->store;
@@ -66,8 +76,23 @@ class Promotions extends Component
         ]);
 
         $this->reset([
-            'code', 'type', 'value', 'minOrder', 'maxDiscount', 'usageLimit', 'pointsCost', 'validFrom', 'validUntil', 'isActive'
+            'code', 'type', 'value', 'minOrder', 'maxDiscount', 'usageLimit', 'pointsCost', 'validFrom', 'validUntil', 'isActive', 'couponType'
         ]);
+
+        // Create notification for all users if it's a public coupon (not reward)
+        if ($this->couponType === 'public' && $this->isActive) {
+            $users = \App\Models\User::where('role', 'customer')->get();
+            foreach ($users as $user) {
+                \App\Models\Notification::createForUser(
+                    $user->_id,
+                    \App\Models\Notification::TYPE_NEW_COUPON,
+                    'Kupon Baru Tersedia!',
+                    "Gunakan kode '{$this->code}' untuk diskon " . ($this->type === 'percentage' ? "{$this->value}%" : "Rp " . number_format($this->value, 0, ',', '.')),
+                    route('products.index'),
+                    ['coupon_code' => $this->code]
+                );
+            }
+        }
 
         $this->dispatch('toast', message: 'Promo/Hadiah berhasil ditambahkan');
     }

@@ -100,11 +100,7 @@
                     {{-- Right --}}
                     <div class="flex items-center gap-3">
                         {{-- Notifications --}}
-                        <button class="p-2 rounded-xl hover:bg-koperasi-dark/5 transition-colors relative">
-                            <svg class="w-5 h-5 text-koperasi-dark/70" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-                            </svg>
-                        </button>
+                        <livewire:notification-bell />
 
                         {{-- User --}}
                         @auth
@@ -138,13 +134,19 @@
         </div>
 
         {{-- Toast --}}
-        <div x-data="{ toasts: [] }"
-             @toast.window="toasts.push({ id: Date.now(), message: $event.detail.message, type: $event.detail.type || 'success' }); setTimeout(() => toasts.shift(), 3000)"
-             class="fixed bottom-6 right-6 z-[60] space-y-2">
-            <template x-for="toast in toasts" :key="toast.id">
-                <div x-transition :class="toast.type === 'error' ? 'toast-error' : 'toast-success'" x-text="toast.message"></div>
-            </template>
-        </div>
+        <x-ui.toast-container />
+
+        {{-- Offline Banner --}}
+        <x-ui.offline-banner />
+
+        {{-- Livewire Progress Bar --}}
+        <x-ui.livewire-progress-simple />
+
+        {{-- Livewire Error Overlay --}}
+        <x-ui.livewire-error />
+
+        {{-- Confirm Dialog --}}
+        <x-ui.confirm-dialog />
 
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         @stack('scripts')

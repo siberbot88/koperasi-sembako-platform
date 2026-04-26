@@ -109,6 +109,20 @@ class ReviewForm extends Component
 
         $this->submitted   = true;
         $this->alreadyDone = true;
+
+        // Create notification for seller
+        $product = \App\Models\Product::find($this->productId);
+        if ($product && $product->store) {
+            \App\Models\Notification::createForUser(
+                $product->store->user_id,
+                \App\Models\Notification::TYPE_NEW_REVIEW,
+                'Ulasan Baru!',
+                "Produk '{$product->name}' mendapat ulasan {$this->rating} bintang",
+                route('seller.reviews'),
+                ['product_id' => (string) $product->_id, 'rating' => $this->rating]
+            );
+        }
+
         $this->dispatch('toast', message: 'Ulasan Anda berhasil dikirim. Terima kasih!');
     }
 

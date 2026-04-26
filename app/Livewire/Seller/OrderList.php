@@ -60,6 +60,26 @@ class OrderList extends Component
         $order->pushStatusHistory($newStatus);
         $order->save();
 
+        // Create notification for user
+        $statusMessages = [
+            'processing' => 'Pesanan Anda sedang diproses',
+            'ready' => 'Pesanan Anda siap untuk dikirim',
+            'shipped' => 'Pesanan Anda sedang dalam pengiriman',
+            'completed' => 'Pesanan Anda telah selesai',
+            'cancelled' => 'Pesanan Anda dibatalkan',
+        ];
+
+        if (isset($statusMessages[$newStatus])) {
+            \App\Models\Notification::createForUser(
+                $order->user_id,
+                \App\Models\Notification::TYPE_ORDER_STATUS,
+                $statusMessages[$newStatus],
+                "Pesanan #{$order->order_number} - Status: " . ucfirst($newStatus),
+                route('orders.show', $order->order_number),
+                ['order_id' => (string) $order->_id, 'status' => $newStatus]
+            );
+        }
+
         $this->dispatch('toast', message: "Status pesanan diubah ke: " . ucfirst($newStatus));
     }
 

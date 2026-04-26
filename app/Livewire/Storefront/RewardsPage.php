@@ -58,10 +58,19 @@ class RewardsPage extends Component
     {
         $user = auth()->user();
 
-        // Templates are active coupons with a points_cost > 0 and no specific user_id
+        // Templates: active reward coupons, not yet expired, not yet started filtering
+        $now = now();
         $templates = Coupon::where('is_active', true)
             ->where('points_cost', '>', 0)
             ->whereNull('user_id')
+            ->where(function ($q) use ($now) {
+                $q->whereNull('valid_until')->orWhere('valid_until', '>=', $now);
+            })
+            ->where(function ($q) use ($now) {
+                $q->whereNull('valid_from')->orWhere('valid_from', '<=', $now);
+            })
+            ->with('store')
+            ->orderBy('points_cost', 'asc')
             ->get();
 
         // My Redeemed Coupons
