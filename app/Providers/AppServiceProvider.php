@@ -19,14 +19,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS on Heroku
-        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+        // Force HTTPS on Heroku and production
+        if ($this->app->environment('production') || 
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+            (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+            (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)) {
             \URL::forceScheme('https');
-        }
-        
-        // Force HTTPS in production
-        if ($this->app->environment('production')) {
-            \URL::forceScheme('https');
+            $this->app['request']->server->set('HTTPS', true);
         }
     }
 }

@@ -60,6 +60,26 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+// Database seeding route (for production deployment)
+Route::get('/seed-database', function () {
+    if (app()->environment('production')) {
+        try {
+            \Artisan::call('db:seed');
+            return response()->json([
+                'success' => true,
+                'message' => 'Database berhasil di-seed dengan data sample!',
+                'output' => \Artisan::output()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error saat seeding database: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    return response()->json(['success' => false, 'message' => 'Route hanya tersedia di production'], 403);
+})->name('seed.database');
+
 Route::post('/logout', function (\App\Livewire\Actions\Logout $logout) {
     $logout();
     return redirect('/');
