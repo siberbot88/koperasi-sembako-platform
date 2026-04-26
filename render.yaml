@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: koperasi-sembako
+    runtime: php
+    plan: free
+    buildCommand: composer install --no-dev --optimize-autoloader && npm install && npm run build
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_NAME
+        value: Koperasi Sembako
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: FILESYSTEM_DISK
+        value: public
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_LEVEL
+        value: error
+      - key: MAIL_MAILER
+        value: log
+      - key: MAIL_FROM_ADDRESS
+        value: noreply@koperasi-sembako.com
+      - key: MAIL_FROM_NAME
+        value: Koperasi Sembako
+      - key: DB_CONNECTION
+        value: mongodb
