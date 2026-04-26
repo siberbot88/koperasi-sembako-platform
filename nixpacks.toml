@@ -1,9 +1,17 @@
 [phases.setup]
-nixPkgs = ['php82', 'php82Packages.composer', 'nodejs_18', 'php82Extensions.mongodb', 'php82Extensions.openssl', 'php82Extensions.fileinfo', 'php82Extensions.gd']
+nixPkgs = [
+    'php82',
+    'php82Extensions.mongodb',
+    'php82Extensions.openssl', 
+    'php82Extensions.fileinfo',
+    'php82Extensions.gd',
+    'php82Packages.composer',
+    'nodejs_18'
+]
 
 [phases.install]
 cmds = [
-    'composer install --no-dev --optimize-autoloader --no-interaction',
+    'composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist',
     'npm ci --only=production',
     'npm run build'
 ]
@@ -11,7 +19,7 @@ cmds = [
 [phases.build]
 cmds = [
     'php artisan config:cache',
-    'php artisan route:cache',
+    'php artisan route:cache', 
     'php artisan view:cache'
 ]
 
