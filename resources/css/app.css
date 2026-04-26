@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================================================
+   KOPERASI SEMBAKO - DESIGN SYSTEM
+   Colors: #FCFCFC | #F6F930 | #D2F898 | #2F2F2F | #000
+   Scale: 0.9x compact
+   ================================================ */
+
+@layer base {
+    html {
+        font-size: 14px;
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        @apply bg-koperasi-bg text-koperasi-dark;
+        font-family: 'Inter', 'Outfit', system-ui, sans-serif;
+    }
+
+    /* Typography scale */
+    h1 { @apply text-4xl font-bold tracking-tight text-koperasi-black; }
+    h2 { @apply text-3xl font-bold tracking-tight text-koperasi-black; }
+    h3 { @apply text-2xl font-semibold text-koperasi-dark; }
+    h4 { @apply text-xl font-semibold text-koperasi-dark; }
+    h5 { @apply text-lg font-medium text-koperasi-dark; }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply bg-koperasi-dark/20 rounded-full;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-koperasi-dark/40;
+    }
+}
+
+@layer components {
+    /* ---- BUTTON SYSTEM ---- */
+    .btn {
+        @apply inline-flex items-center justify-center gap-1.5
+               px-4 py-2 text-sm font-semibold
+               rounded-xl border-2 border-koperasi-black
+               transition-all duration-150 ease-out
+               cursor-pointer select-none;
+    }
+    .btn:active {
+        @apply translate-y-px shadow-none;
+    }
+
+    .btn-primary {
+        @apply btn bg-koperasi-primary text-koperasi-black shadow-brutal-sm;
+    }
+    .btn-primary:hover {
+        @apply shadow-brutal bg-yellow-300;
+    }
+
+    .btn-secondary {
+        @apply btn bg-koperasi-accent text-koperasi-black shadow-brutal-sm;
+    }
+    .btn-secondary:hover {
+        @apply shadow-brutal bg-green-200;
+    }
+
+    .btn-dark {
+        @apply btn bg-koperasi-dark text-koperasi-bg border-koperasi-dark shadow-none;
+    }
+    .btn-dark:hover {
+        @apply bg-koperasi-black;
+    }
+
+    .btn-outline {
+        @apply btn bg-transparent text-koperasi-dark;
+    }
+    .btn-outline:hover {
+        @apply bg-koperasi-dark text-koperasi-bg;
+    }
+
+    .btn-sm {
+        @apply px-3 py-1.5 text-xs rounded-lg;
+    }
+    .btn-lg {
+        @apply px-6 py-3 text-base rounded-2xl;
+    }
+
+    /* ---- CARD SYSTEM ---- */
+    .card {
+        @apply bg-white rounded-2xl border-2 border-koperasi-black/10
+               shadow-card transition-all duration-200;
+    }
+    .card:hover {
+        @apply shadow-card-hover border-koperasi-black/20;
+    }
+
+    .card-bordered {
+        @apply card border-2 border-koperasi-black shadow-brutal-sm;
+    }
+    .card-bordered:hover {
+        @apply shadow-brutal;
+    }
+
+    /* ---- BADGE SYSTEM ---- */
+    .badge {
+        @apply inline-flex items-center px-2 py-0.5
+               text-xs font-semibold rounded-lg
+               border border-koperasi-black/20;
+    }
+    .badge-primary {
+        @apply badge bg-koperasi-primary text-koperasi-black border-koperasi-black;
+    }
+    .badge-accent {
+        @apply badge bg-koperasi-accent text-koperasi-dark border-koperasi-dark/30;
+    }
+    .badge-dark {
+        @apply badge bg-koperasi-dark text-koperasi-bg border-koperasi-dark;
+    }
+
+    /* ---- INPUT SYSTEM ---- */
+    .input {
+        @apply w-full rounded-xl border-2 border-koperasi-dark/20
+               bg-white px-3 py-2 text-sm text-koperasi-dark
+               placeholder:text-koperasi-dark/40
+               focus:border-koperasi-primary focus:ring-2 focus:ring-koperasi-primary/30
+               transition-colors duration-150;
+    }
+    .input-label {
+        @apply block text-sm font-medium text-koperasi-dark mb-1;
+    }
+
+    /* ---- TABLE SYSTEM ---- */
+    .table-wrapper {
+        @apply w-full overflow-x-auto rounded-2xl border-2 border-koperasi-black/10;
+    }
+    .table-base {
+        @apply w-full text-sm text-left;
+    }
+    .table-base thead {
+        @apply bg-koperasi-dark text-koperasi-bg text-xs uppercase tracking-wider;
+    }
+    .table-base thead th {
+        @apply px-4 py-3 font-semibold;
+    }
+    .table-base tbody tr {
+        @apply border-b border-koperasi-dark/5 hover:bg-koperasi-accent/20 transition-colors;
+    }
+    .table-base tbody td {
+        @apply px-4 py-3;
+    }
+
+    /* ---- SKELETON LOADING ---- */
+    .skeleton {
+        @apply bg-koperasi-dark/5 rounded-xl animate-pulse-soft;
+    }
+
+    /* ---- EMPTY STATE ---- */
+    .empty-state {
+        @apply flex flex-col items-center justify-center py-16 text-center;
+    }
+    .empty-state svg {
+        @apply w-16 h-16 text-koperasi-dark/20 mb-4;
+    }
+    .empty-state h3 {
+        @apply text-lg font-semibold text-koperasi-dark/50;
+    }
+    .empty-state p {
+        @apply text-sm text-koperasi-dark/40 mt-1;
+    }
+
+    /* ---- TOAST / FEEDBACK ---- */
+    .toast {
+        @apply fixed bottom-6 right-6 z-50
+               px-4 py-3 rounded-xl border-2 border-koperasi-black
+               shadow-brutal text-sm font-medium
+               animate-fade-in-up;
+    }
+    .toast-success {
+        @apply toast bg-koperasi-accent text-koperasi-dark;
+    }
+    .toast-error {
+        @apply toast bg-red-100 text-red-800 border-red-800;
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+    .container-app {
+        @apply max-w-8xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+}

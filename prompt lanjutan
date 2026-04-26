@@ -1,0 +1,441 @@
+## Tambahan fitur lanjutan untuk membuat sistem ecommerce lebih canggih, nyaman, dan realistis
+
+Saya ingin Anda memperluas sistem ecommerce koperasi sembako ini dengan fitur tambahan yang meningkatkan kenyamanan pengguna, kejelasan operasional, dan kualitas pengalaman belanja, tetapi **jangan menambahkan gamifikasi** dan **jangan menambahkan loyalty point / reward point**.
+
+Fokus fitur tambahan harus pada:
+
+* kenyamanan customer
+* kejelasan status pesanan
+* transparansi pengiriman
+* penanganan masalah pelanggan
+* kepercayaan pengguna
+* pengalaman ecommerce yang matang dan modern
+* operasional seller yang lebih rapi
+
+---
+
+# 1. BATASAN TAMBAHAN
+
+Jangan tambahkan:
+
+* gamifikasi
+* loyalty point
+* daily check-in
+* spin wheel
+* badge reward
+* coin system
+* membership point
+* mini game
+* elemen hiburan yang tidak relevan
+
+Tambahkan hanya fitur yang benar-benar meningkatkan kualitas ecommerce dan pengalaman pengguna.
+
+---
+
+# 2. FITUR TAMBAHAN YANG WAJIB DIMASUKKAN
+
+## 2.1 Sistem rating dan ulasan produk
+
+Tambahkan sistem rating dan review yang matang.
+
+Saya ingin Anda merancang:
+
+* rating bintang untuk produk
+* ulasan teks
+* opsi upload foto ulasan bila relevan
+* label “pembelian terverifikasi”
+* ringkasan rating rata-rata
+* distribusi rating 1–5 bintang
+* filter review
+* sort review
+* highlight review paling membantu
+* aturan siapa yang boleh memberi review
+* validasi review
+* moderasi ringan bila diperlukan
+
+Jelaskan juga:
+
+* alur customer memberi rating setelah pesanan selesai
+* tampilan rating pada product card
+* tampilan rating pada product detail
+* dampak rating pada seller dashboard
+* bagaimana seller melihat feedback pelanggan
+
+---
+
+## 2.2 Status barang dikirim dan pelacakan pengiriman
+
+Tambahkan sistem pengiriman yang lebih lengkap dan jelas.
+
+Saya ingin Anda menambahkan:
+
+* status pesanan: diproses, dikemas, dikirim, selesai, dibatalkan
+* status khusus “barang dikirim”
+* halaman pelacakan pengiriman
+* timeline status pengiriman
+* nomor resi / tracking number
+* nama kurir / metode pengiriman
+* estimasi waktu tiba
+* detail alamat tujuan
+* histori update status pengiriman
+* notifikasi perubahan status pesanan
+
+Jelaskan:
+
+* flow update status dari seller ke customer
+* bagaimana seller menginput data pengiriman
+* bagaimana customer melihat status barang dikirim
+* bagaimana halaman tracking ditampilkan
+* bagaimana status order dan status shipment dibedakan
+* bagaimana data shipment disimpan di MongoDB
+* event apa saja yang memicu notifikasi
+
+Tambahkan juga:
+
+* status gagal kirim bila perlu
+* status pengantaran ulang bila masuk akal
+* fallback bila tracking eksternal belum tersedia
+* placeholder integration untuk API kurir jika nanti ingin dikembangkan
+
+---
+
+## 2.3 Halaman pembatalan produk / pembatalan pesanan
+
+Tambahkan fitur pembatalan pesanan yang rapi dan realistis.
+
+Saya ingin Anda membuat:
+
+* halaman cancel order / pembatalan pesanan
+* alasan pembatalan
+* daftar item yang dibatalkan
+* status pembatalan
+* apakah pembatalan full order atau item tertentu
+* aturan kapan order masih boleh dibatalkan
+* konfirmasi pembatalan
+* ringkasan dampak pembatalan
+* notifikasi ke seller
+* histori pembatalan
+
+Jelaskan:
+
+* kapan customer boleh cancel
+* kapan seller boleh menolak cancel
+* kapan order tidak bisa lagi dibatalkan
+* alur cancel sebelum dikirim
+* alur cancel saat sudah diproses
+* alur cancel saat sudah dikirim
+* apakah perlu ajukan pembatalan atau langsung batal
+* bagaimana status order berubah
+* bagaimana stok dikembalikan bila pembatalan berhasil
+* bagaimana histori dan audit disimpan
+
+Tambahkan juga:
+
+* halaman detail pembatalan
+* daftar alasan pembatalan yang realistis
+* tampilan status cancel pada order history
+* dampaknya pada dashboard seller
+
+---
+
+## 2.4 Fitur customer service dengan AI Grok
+
+Tambahkan fitur customer service canggih berbasis AI Grok untuk membantu pelanggan saat menggunakan website.
+
+Saya ingin Anda merancang fitur customer service AI yang:
+
+* membantu pelanggan memahami cara menggunakan website
+* menjawab pertanyaan seputar akun, pesanan, pembayaran, pengiriman, pembatalan, dan penggunaan fitur website
+* membantu troubleshooting masalah umum saat user menggunakan web
+* memberi jawaban cepat dan ramah
+* mengurangi beban customer service manual
+* tetap aman dan terkendali
+
+Jelaskan fitur ini sebagai:
+
+* AI customer service assistant berbasis Grok
+* tersedia di website melalui widget chat / help assistant
+* mendukung pertanyaan operasional dan bantuan penggunaan website
+
+## Cakupan jawaban AI customer service
+
+AI Grok harus bisa membantu menjawab pertanyaan seperti:
+
+* bagaimana cara checkout
+* bagaimana menggunakan kupon
+* kenapa produk tidak bisa dimasukkan ke keranjang
+* bagaimana melacak pesanan
+* bagaimana membatalkan pesanan
+* bagaimana mengubah alamat
+* bagaimana melihat riwayat pembelian
+* bagaimana memberi rating
+* kenapa pembayaran belum terverifikasi
+* kenapa status pesanan belum berubah
+* bagaimana menghubungi bantuan lanjutan
+* bagaimana seller mengelola produk, order, dan promo jika fitur ini juga tersedia untuk seller side help
+
+## Batasan AI customer service
+
+AI Grok tidak boleh:
+
+* memberikan keputusan refund final otomatis tanpa aturan sistem
+* mengubah data sensitif tanpa otorisasi
+* memberi janji palsu
+* membuat data pengiriman palsu
+* memberi jawaban di luar data yang tersedia
+* mengambil tindakan kritikal tanpa konfirmasi user
+* menggantikan policy backend
+
+AI harus:
+
+* membantu menjelaskan
+* membantu navigasi
+* membantu troubleshooting
+* membantu eskalasi ke CS manusia bila masalah tidak terselesaikan
+* memberi saran langkah berikutnya dengan jelas
+
+## Yang harus Anda jelaskan
+
+Rancang:
+
+* widget AI customer service
+* posisi widget pada UI
+* flow percakapan
+* contoh use case
+* fallback ke human support
+* escalation flow
+* konteks apa saja yang boleh dibaca AI
+* data apa yang tidak boleh ditampilkan AI
+* guardrail dan security
+* log interaksi AI
+* halaman riwayat bantuan bila perlu
+* seller-side AI help assistant bila relevan
+* architecture integrasi AI Grok secara high level
+
+## Architecture AI Grok yang saya inginkan
+
+Jelaskan:
+
+* bagaimana frontend chat widget bekerja
+* bagaimana request dikirim ke backend Laravel
+* bagaimana backend memanggil service AI Grok
+* bagaimana konteks user dipakai secara aman
+* bagaimana AI membedakan pertanyaan umum vs pertanyaan spesifik order
+* bagaimana AI melakukan escalation ke human support
+* bagaimana menyimpan conversation log
+* bagaimana rate limiting dan abuse prevention
+* bagaimana fallback jika AI gagal menjawab
+
+---
+
+# 3. FITUR TAMBAHAN PENDUKUNG AGAR ECOMMERCE LEBIH MATANG
+
+Selain fitur utama di atas, tambahkan juga ide fitur pendukung yang relevan untuk ecommerce canggih dan nyaman, tetapi tetap realistis dan tidak berlebihan.
+
+Pertimbangkan fitur seperti:
+
+* reorder dari pesanan sebelumnya
+* recently viewed products
+* save cart
+* rekomendasi produk terkait
+* sticky order summary saat checkout
+* multi-address management yang lebih matang
+* invoice / receipt page
+* notifikasi status pesanan
+* pusat bantuan / help center
+* FAQ kontekstual
+* contact support page
+* order issue reporting
+* empty state yang informatif
+* error recovery flow
+* out-of-stock handling yang rapi
+* low stock info
+* estimated delivery info di product detail
+* seller notes / packing notes
+* customer notes saat checkout
+
+Jangan memasukkan fitur yang tidak relevan dengan ecommerce sembako yang realistis.
+
+---
+
+# 4. HAL YANG HARUS DIPERBARUI DARI ARSITEKTUR SEBELUMNYA
+
+Saya ingin Anda memperbarui blueprint lama dengan memasukkan fitur baru ini.
+
+Tolong revisi dan perluas bagian berikut:
+
+* product foundation
+* functional requirements
+* business rules
+* domain modules
+* system architecture
+* database architecture MongoDB
+* customer app architecture
+* seller dashboard architecture
+* UI/UX foundation
+* routes / page map
+* Livewire component blueprint
+* MongoDB collections
+* order flow
+* shipment flow
+* cancel flow
+* review flow
+* customer service AI flow
+
+---
+
+# 5. UPDATE DOMAIN / MODULE YANG HARUS DIPERTIMBANGKAN
+
+Pertimbangkan penambahan atau perluasan module seperti:
+
+* Reviews
+* Shipments
+* Tracking
+* Cancellations
+* Customer Support
+* AI Support Assistant
+* Help Center
+* Notifications
+
+Untuk masing-masing module baru / revisi, jelaskan:
+
+* tanggung jawab
+* entity utama
+* relasi dengan module lain
+* alur utama
+* risiko teknis
+* solusi pragmatis
+
+---
+
+# 6. UPDATE DATABASE DAN COLLECTION
+
+Perbarui desain MongoDB dengan kebutuhan fitur baru ini.
+
+Tambahkan / revisi collection atau struktur data untuk:
+
+* reviews
+* shipments
+* tracking events
+* cancellations
+* support conversations
+* support messages
+* AI assistance logs
+* issue reports
+* notification logs
+
+Untuk masing-masing jelaskan:
+
+* tujuan
+* field penting
+* embedded vs reference
+* index yang dibutuhkan
+* query utama
+* snapshot jika perlu
+* catatan integritas data
+
+---
+
+# 7. UPDATE HALAMAN DAN FITUR UI
+
+Tambahkan halaman / section baru berikut:
+
+* halaman tracking pengiriman
+* halaman pembatalan pesanan
+* halaman detail pembatalan
+* section rating & review di product detail
+* halaman pusat bantuan
+* widget AI customer service
+* halaman riwayat bantuan bila diperlukan
+* seller shipment management section
+* seller review insight section
+
+Untuk tiap halaman / section baru, jelaskan:
+
+* tujuan
+* komponen utama
+* data yang dibutuhkan
+* interaksi utama
+* loading state
+* empty state
+* error state
+* responsif mobile dan desktop
+
+---
+
+# 8. UPDATE ALUR BISNIS
+
+Perluas dan jelaskan alur berikut secara detail:
+
+* alur customer checkout sampai order selesai
+* alur seller memproses order hingga barang dikirim
+* alur tracking pengiriman
+* alur customer memberi rating
+* alur customer mengajukan pembatalan
+* alur seller menangani pembatalan
+* alur AI customer service menjawab pertanyaan
+* alur eskalasi ke CS manusia
+
+---
+
+# 9. OUTPUT TAMBAHAN YANG SAYA INGINKAN
+
+Setelah merevisi blueprint, saya ingin Anda juga memberikan:
+
+1. daftar fitur baru yang paling bernilai
+2. prioritas implementasi fitur tambahan
+3. perubahan sitemap
+4. perubahan collection MongoDB
+5. perubahan Livewire components
+6. perubahan seller dashboard
+7. perubahan state machine order dan shipment
+8. contoh status order, shipment, cancellation, review
+9. contoh conversation flow AI support
+10. risiko teknis integrasi AI Grok
+11. solusi pragmatis untuk integrasi AI pada MVP
+12. roadmap implementasi bertahap fitur tambahan ini
+
+---
+
+# 10. GAYA OUTPUT
+
+* Tulis dalam bahasa Indonesia
+* Sangat terstruktur
+* Fokus pada implementasi nyata
+* Jangan terlalu generik
+* Jangan memberi jawaban pendek
+* Jangan pakai emoticon
+* Jangan keluar dari stack utama
+* Jangan keluar dari palet warna utama
+* Jangan menambahkan gamifikasi
+* Jangan menambahkan loyalty point
+* Jelaskan alasan teknis secara praktis
+
+---
+
+# 11. INSTRUKSI TERAKHIR
+
+Saya ingin Anda memperlakukan prompt ini sebagai revisi besar terhadap blueprint sebelumnya.
+
+Jangan mengulang semua isi lama secara mentah.
+Sebaliknya:
+
+* perluas bagian yang relevan
+* revisi arsitektur yang terdampak
+* tambahkan module baru
+* perbarui requirement
+* perbarui flow
+* perbarui skema data
+* perbarui halaman
+* perbarui UI/UX
+* perbarui roadmap implementasi
+
+Tutup jawaban Anda dengan:
+
+* urutan implementasi fitur tambahan paling efisien
+* fitur mana yang wajib masuk MVP lanjutan
+* fitur mana yang bisa masuk fase setelah MVP
+* prompt lanjutan untuk generate shipment tracking module
+* prompt lanjutan untuk generate cancellation module
+* prompt lanjutan untuk generate review & rating module
+* prompt lanjutan untuk generate AI customer service widget dengan integrasi Grok
